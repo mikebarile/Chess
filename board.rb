@@ -1,4 +1,11 @@
+require 'colorize'
+require_relative 'cursor'
+require_relative 'display'
+require_relative 'piece'
+require_relative 'nullpiece'
+
 class Board
+  attr_reader :display, :rows
 
   def initialize
     @rows = Array.new(8){Array.new(8)}
@@ -19,10 +26,10 @@ class Board
       Proc.new{|color, board, pos| Rook.new(color, board, pos)},
     ]
     @rows[0].map!.with_index{ |tile, idx| nobles[idx].call(:white, self, [0, idx])}
-    @rows[1].map!.with_index{ |tile, idx| Pawn.new(:white, self, [1, idx])
+    @rows[1].map!.with_index{ |tile, idx| Pawn.new(:white, self, [1, idx])}
     nobles[3], nobles[4] = nobles[4], nobles[3]
     @rows[2..5].each { |row| row.map! { @null_piece } }
-    @rows[6].map!.with_index{ |tile, idx| Pawn.new(:black, self, [6, idx])
+    @rows[6].map!.with_index{ |tile, idx| Pawn.new(:black, self, [6, idx])}
     @rows[7].map!.with_index{ |tile, idx| nobles[idx].call(:black, self, [7, idx])}
   end
 
@@ -47,10 +54,14 @@ class Board
   end
 
   def in_bounds?(end_pos)
-    x, y = pos
+    x, y = end_pos
     return false if x > 7 || y > 7 || x < 0 || y < 0
     true
   end
 
 
 end
+
+a = Board.new
+
+a.display.get_cursor_pos
