@@ -59,9 +59,45 @@ class Board
     true
   end
 
+  def in_check?(color)
+    king_pos = find_king(color)
+    check = false
 
+    @rows.each do |row|
+      row.each do |square|
+        if square != @null_piece && square.color != color &&
+            square.valid_moves.include?(king_pos)
+          check = true
+        end
+      end
+    end
+
+    check
+  end
+
+  def checkmate?(color)
+    king_pos = find_king(color)
+
+    self[king_pos].valid_moves.each do |poss_move|
+      move(king_pos, poss_move)
+      return false unless in_check?(color)
+      move[poss_move, king_pos]
+    end
+
+    true
+  end
+
+  private
+
+  def find_king(color)
+    @rows.each_with_index do |row, row_i|
+      row.each_with_index do |square, square_i|
+        return [row_i, square_i] if (square.is_a?(Piece) &&
+            square.symbol == :K && square.color == color)
+      end
+    end
+  end
 end
 
 a = Board.new
-
-a.display.get_cursor_pos
+p a.in_check?(:white)

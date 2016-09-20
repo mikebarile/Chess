@@ -1,5 +1,5 @@
 class Piece
-  attr_reader :symbol
+  attr_reader :symbol, :color
 
   def initialize(color, board, pos)
     @color = color
@@ -8,7 +8,7 @@ class Piece
   end
 
   def to_s
-    @symbol.to_s.colorize(@color)
+    @string.colorize(@color)
   end
 
   def valid_moves
@@ -21,45 +21,98 @@ class Piece
   end
 end
 
-class King
+class King < Piece
+  diffs = [
+    [1, -1],
+    [1, 0],
+    [1, 1],
+    [0, -1],
+    [0, 1],
+    [-1, -1],
+    [-1, 0],
+    [-1, 1]
+  ]
 
   def initialize(color, board, pos)
-    @symbol = :♔
+    @symbol = :K
+    @string = "♔"
     super
   end
 end
 
-class Queen
+class Queen < Piece
+  diffs = []
+  (-7..7).each { |i| (-7..7).each { |j| diffs << [i, j] } }
+  diffs.delete([0, 0])
+  diffs.select!{|arr| arr[0] == 0 || arr[1] == 0 ||
+      abs(arr[0]) == abs(arr[0])}
+
   def initialize(color, board, pos)
-    @symbol = :♕
+    @symbol = :Q
+    @string = "♕"
     super
   end
 end
 
-class Rook
+class Rook < Piece
+  diffs = []
+  (-7..7).each do |x|
+    diffs << [0, x]
+    diffs << [x, 0]
+  end
+  diffs.delete([0, 0])
+
   def initialize(color, board, pos)
-    @symbol = :♖
+    @symbol = :R
+    @string = "♖"
     super
   end
 end
 
-class Bishop
+class Bishop < Piece
+  diffs = []
+  (-7..7).each do |i|
+    (-7..7).each do |j|
+      diffs << [i, j]
+    end
+  end
+
+  diffs.select! { |arr| arr[0] == abs(arr[1]) }
+
   def initialize(color, board, pos)
-    @symbol = :♗
+    @symbol = :B
+    @string = "♗"
     super
   end
 end
 
-class Knight
+class Knight < Piece
+  diffs = [
+    [2,-1],
+    [2,1],
+    [1,-2],
+    [1,2],
+    [-1,-2],
+    [-1,2],
+    [-2,-1],
+    [-2,1]
+  ]
+
   def initialize(color, board, pos)
-    @symbol = :♘
+    @symbol = :Kn
+    @string = "♘"
     super
   end
 end
 
-class Pawn
+class Pawn < Piece
   def initialize(color, board, pos)
-    @symbol = :♙
+    @symbol = :P
+    @string = "♙"
+    @first_move = true
     super
+  end
+
+  def valid_moves
   end
 end

@@ -27,6 +27,7 @@ class Display
   end
 
   def get_cursor_pos
+    system('clear')
     render
     @cursor.get_input
     get_cursor_pos
