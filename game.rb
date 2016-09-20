@@ -37,5 +37,7 @@ class Game
     end
 end
 
-g = Game.new
-g.play_game
+if __FILE__ == $PROGRAM_NAME
+  new_game = Game.new
+  new_game.play_game
+end

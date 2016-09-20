@@ -11,9 +11,9 @@ class HumanPlayer
     begin
       piece_to_move = @board.display.get_cursor_pos(@name, &select_piece)
       pos_to_move = @board.display.get_cursor_pos(@name, &select_move)
-      @board.valid_move(piece_to_move, pos_to_move)
+      @board.valid_move(piece_to_move, pos_to_move, @color)
     rescue
-      "WRONG! Please try again!"
+      sleep(2)
       retry
     end
   end

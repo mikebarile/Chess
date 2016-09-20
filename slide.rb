@@ -64,7 +64,8 @@ module Slide
       new_pos = @pos.dup
       un_blocked = true
       until new_pos == move
-        new_pos.map!.with_index { |pos, i| pos + diff[i] }
+        new_pos[0] += step[0]
+        new_pos[1] += step[1]
         un_blocked = false if @board[new_pos].is_a?(Piece)
       end
       un_blocked

@@ -48,23 +48,28 @@ class Board
   end
 
   def move(start, end_pos)
-    raise "Starting position is empty! Try again." if self[start].to_s == " "
-    # we fukked up
-    raise "That position was out of bounds! Try again." unless (in_bounds?(end_pos) && in_bounds?(start))
-    #out of bounds
-
     self[end_pos] = self[start]
     self[start] = @null_piece
   end
 
-  def valid_move(start, end_pos)
-    raise "Starting position is empty! Try again." if self[start].to_s == " "
-    raise "That position was out of bounds! Try again." unless
-        (in_bounds?(end_pos) && in_bounds?(start))
-    raise "Invalid move, try again!" unless
-        self[start].valid_moves.include?(end_pos)
+  def valid_move(start, end_pos, color)
+    if self[start].to_s == " "
+      p "Starting position is empty! Try again."
+      raise "a"
+    end
+    unless(in_bounds?(end_pos) && in_bounds?(start))
+      p "That position was out of bounds! Try again."
+      raise "a"
+    end
+    unless self[start].valid_moves.include?(end_pos)
+      p "Invalid move. Try again!"
+      raise "a"
+    end
+    unless  self[start].color == color
+      p "Can't move your opponent's pieces! Try again."
+      raise "a"
+    end
 
-    p self[start].valid_moves()
     self[end_pos] = self[start]
     self[start] = @null_piece
   end
@@ -114,3 +119,6 @@ class Board
     end
   end
 end
+
+a = Board.new
+p a[[0,0]].valid_moves
