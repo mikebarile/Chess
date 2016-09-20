@@ -100,4 +100,4 @@ class Board
 end
 
 a = Board.new
-p a.in_check?(:black)
+p a.in_check?(:white)

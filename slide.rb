@@ -20,6 +20,8 @@ module Slide
     poss_moves = in_bounds(poss_moves)
     #Is the space empty or occupied by opponent piece?
     poss_moves = empty_or_opp(poss_moves)
+    #Is the path blocked?
+    poss_moves = path_unblocked(poss_moves)
   end
 
   private
@@ -57,22 +59,15 @@ module Slide
     poss_moves.select do |move|
       row_m, col_m = move
       row_s, col_s = @pos
-      diff = [row_m - row_s, col_m - col_s].map{|el| el / el.abs}
-      new_pos = @pos
+      diff = [row_m - row_s, col_m - col_s]
+      step = diff.map{ |el| el == 0 ? el : el / el.abs}
+      new_pos = @pos.dup
       un_blocked = true
       until new_pos == move
         new_pos.map!.with_index { |pos, i| pos + diff[i] }
         un_blocked = false if @board[new_pos].is_a?(Piece)
       end
-
       un_blocked
     end
   end
-    # horizontal, vertical, diagonal
-    # compare row, col for start and end position
-    # same row, horizontal
-    # same col, vertical
-    # both diff, diagz
-  end
-
 end

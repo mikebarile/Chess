@@ -144,4 +144,8 @@ class Pawn < Piece
   def valid_moves
     [1, 1]
   end
+
+  def opp_valid_moves
+    [1, 1]
+  end
 end
