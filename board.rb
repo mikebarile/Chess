@@ -49,8 +49,8 @@ class Board
     raise "That position was out of bounds! Try again." unless (in_bounds?(end_pos) && in_bounds?(start))
     #out of bounds
 
-    @rows[end_pos] = @rows[start]
-    @rows[start] = @null_piece
+    self[end_pos] = self[start]
+    self[start] = @null_piece
   end
 
   def in_bounds?(end_pos)
@@ -66,7 +66,7 @@ class Board
     @rows.each do |row|
       row.each do |square|
         if square != @null_piece && square.color != color &&
-            square.valid_moves.include?(king_pos)
+            square.opp_valid_moves.include?(king_pos)
           check = true
         end
       end
