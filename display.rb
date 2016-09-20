@@ -15,6 +15,7 @@ class Display
       row_str = row_str.join(" ")
       puts "#{row_num.to_s.colorize(:white)} #{row_str}"
     end
+    nil
   end
 
   def render_square(row, col, el)

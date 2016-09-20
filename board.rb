@@ -43,12 +43,28 @@ class Board
     @rows[row][col] = val
   end
 
+  def render
+    @display.render
+  end
+
   def move(start, end_pos)
     raise "Starting position is empty! Try again." if self[start].to_s == " "
     # we fukked up
     raise "That position was out of bounds! Try again." unless (in_bounds?(end_pos) && in_bounds?(start))
     #out of bounds
 
+    self[end_pos] = self[start]
+    self[start] = @null_piece
+  end
+
+  def valid_move(start, end_pos)
+    raise "Starting position is empty! Try again." if self[start].to_s == " "
+    raise "That position was out of bounds! Try again." unless
+        (in_bounds?(end_pos) && in_bounds?(start))
+    raise "Invalid move, try again!" unless
+        self[start].valid_moves.include?(end_pos)
+
+    p self[start].valid_moves()
     self[end_pos] = self[start]
     self[start] = @null_piece
   end
@@ -99,5 +115,8 @@ class Board
   end
 end
 
+system('clear')
 a = Board.new
-p a.in_check?(:white)
+p a.render
+a.valid_move([0,1],[2,0])
+p a.render
