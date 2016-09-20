@@ -5,7 +5,7 @@ require_relative 'piece'
 require_relative 'nullpiece'
 
 class Board
-  attr_reader :display, :rows
+  attr_reader :display, :rows, :null_piece
 
   def initialize
     @rows = Array.new(8){Array.new(8)}
@@ -100,4 +100,4 @@ class Board
 end
 
 a = Board.new
-p a.in_check?(:white)
+p a.in_check?(:black)
