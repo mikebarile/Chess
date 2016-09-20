@@ -27,11 +27,16 @@ class Display
     end
   end
 
-  def get_cursor_pos
-    system('clear')
-    render
-    @cursor.get_input
-    get_cursor_pos
+  def get_cursor_pos(name, &prc)
+    input = nil
+    until input
+      system('clear')
+      puts "#{name}, it is your turn! Time to move a piece."
+      render
+      prc.call
+      input = @cursor.get_input
+    end
+    input
   end
 
 end

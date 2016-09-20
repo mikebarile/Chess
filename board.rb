@@ -96,11 +96,11 @@ class Board
 
     self[king_pos].valid_moves.each do |poss_move|
       move(king_pos, poss_move)
-      return false unless in_check?(color)
+      return true if in_check?(color)
       move[poss_move, king_pos]
     end
 
-    true
+    false
   end
 
   private
@@ -114,9 +114,3 @@ class Board
     end
   end
 end
-
-system('clear')
-a = Board.new
-p a.render
-a.valid_move([0,1],[2,0])
-p a.render

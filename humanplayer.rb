@@ -1,23 +1,20 @@
 class HumanPlayer
   def initialize(name, board, color)
-    @name = name
+    @name = name.capitalize
     @board = board
     @color = color
   end
 
   def play_turn
-    prompt
+    select_piece = Proc.new{p "Select a piece you would like to move and press enter."}
+    select_move = Proc.new{p "Now select the piece's destination and press enter."}
     begin
-      piece_to_move = @board.get_cursor_pos
-      pos_to_move = @board.get_cursor_pos
+      piece_to_move = @board.display.get_cursor_pos(@name, &select_piece)
+      pos_to_move = @board.display.get_cursor_pos(@name, &select_move)
       @board.valid_move(piece_to_move, pos_to_move)
     rescue
       "WRONG! Please try again!"
       retry
     end
-  end
-
-  def prompt
-    puts "It is your turn, #{name}. Please move a piece."
   end
 end

@@ -36,3 +36,6 @@ class Game
       p "#{winner}, you have won the game!!!!!!! :D :D :D :D"
     end
 end
+
+g = Game.new
+g.play_game
