@@ -106,7 +106,7 @@ class Board
       self[king_pos].valid_moves.each do |poss_move|
         move(king_pos, poss_move)
         checkmate = false unless in_check?(color)
-        move[poss_move, king_pos]
+        move(poss_move, king_pos)
       end
     end
     checkmate
