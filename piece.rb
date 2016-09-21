@@ -14,6 +14,10 @@ class Piece
   def to_s
     @string.colorize(@color)
   end
+
+  def update_pos(new_pos)
+    @pos = new_pos
+  end
 end
 
 class King < Piece
@@ -97,7 +101,7 @@ class Bishop < Piece
       end
     end
 
-    @diffs.select! { |arr| arr[0] == arr[1].abs }
+    @diffs.select! { |arr| arr[0].abs == arr[1].abs }
   end
 end
 
@@ -127,25 +131,43 @@ end
 
 class Pawn < Piece
 
+  include Slide
+
   def initialize(color, board, pos)
     @symbol = :P
     @string = "♙"
-    @first_move = true
     super
-    gen_moves
+    gen_diffs
   end
 
   #placeholder
-  def gen_moves
-    @diffs = [1, 1]
+  def gen_diffs
+    @diffs = []
+
+    @diffs << [1, 0] if @color == :white
+    @diffs << [-1, 0] if @color == :black
+
+    @diffs << [2, 0] if @color == :white && @pos[0] == 1
+    @diffs << [-2, 0] if @color == :black && @pos[0] == 6
+
+    white_diag_diffs = [[1, 1], [1, -1]]
+    black_diag_diffs = [[-1, -1], [-1, 1]]
+
+    if @color == :white
+      @diffs.concat(find_diags(white_diag_diffs))
+    else
+      @diffs.concat(find_diags(black_diag_diffs))
+    end
+    # if for diagonals
   end
 
-  #placeholder
-  def valid_moves
-    [1, 1]
-  end
-
-  def opp_valid_moves
-    [1, 1]
+  private
+  def find_diags(diff)
+    diff.select do |diff|
+      d_row, d_col = diff
+      row, col = @pos
+      new_idx = [(d_row + row), (d_col + col)]
+      @board[new_idx].is_a?(Piece) && @board[new_idx].color != @color
+    end
   end
 end

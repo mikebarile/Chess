@@ -2,6 +2,7 @@ module Slide
 
   def valid_moves
     #Create array of possible moves
+    gen_diffs if self.is_a?(Pawn)
     poss_moves = generate_poss_moves
     #Is the space in bounds?
     poss_moves = in_bounds(poss_moves)
@@ -11,10 +12,16 @@ module Slide
     poss_moves = path_unblocked(poss_moves)
     #Will the space put me into check?
     poss_moves = avoids_check(poss_moves)
+    #If piece is a pawn, ensure it can't move fwd into a piece
+    if self.is_a?(Pawn)
+      poss_moves = check_fwd(poss_moves)
+    end
+    poss_moves
   end
 
   def opp_valid_moves
     #Create array of possible moves
+    gen_diffs if self.is_a?(Pawn)
     poss_moves = generate_poss_moves
     #Is the space in bounds?
     poss_moves = in_bounds(poss_moves)
@@ -22,6 +29,11 @@ module Slide
     poss_moves = empty_or_opp(poss_moves)
     #Is the path blocked?
     poss_moves = path_unblocked(poss_moves)
+    #If piece is a pawn, ensure it can't move fwd into a piece
+    if self.is_a?(Pawn)
+      poss_moves = check_fwd(poss_moves)
+    end
+    poss_moves
   end
 
   private
@@ -69,6 +81,16 @@ module Slide
         un_blocked = false if @board[new_pos].is_a?(Piece)
       end
       un_blocked
+    end
+  end
+
+  def check_fwd(poss_moves)
+    poss_moves.select do |move|
+      if move[1] == 0 && @board[move].is_a?(Piece)
+        false
+      else
+        true
+      end
     end
   end
 end

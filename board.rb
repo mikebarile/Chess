@@ -50,6 +50,7 @@ class Board
   def move(start, end_pos)
     self[end_pos] = self[start]
     self[start] = @null_piece
+    self[end_pos].update_pos(end_pos)
   end
 
   def valid_move(start, end_pos, color)
@@ -72,6 +73,7 @@ class Board
 
     self[end_pos] = self[start]
     self[start] = @null_piece
+    self[end_pos].update_pos(end_pos)
   end
 
   def in_bounds?(end_pos)
@@ -97,14 +99,14 @@ class Board
   end
 
   def checkmate?(color)
-    king_pos = find_king(color)
-
-    self[king_pos].valid_moves.each do |poss_move|
-      move(king_pos, poss_move)
-      return true if in_check?(color)
-      move[poss_move, king_pos]
+    if in_check?(color)
+      king_pos = find_king(color)
+      self[king_pos].valid_moves.each do |poss_move|
+        move(king_pos, poss_move)
+        return true if in_check?(color)
+        move[poss_move, king_pos]
+      end
     end
-
     false
   end
 
@@ -119,6 +121,3 @@ class Board
     end
   end
 end
-
-a = Board.new
-p a[[0,0]].valid_moves
