@@ -99,15 +99,17 @@ class Board
   end
 
   def checkmate?(color)
+    checkmate = false
     if in_check?(color)
       king_pos = find_king(color)
+      checkmate = true
       self[king_pos].valid_moves.each do |poss_move|
         move(king_pos, poss_move)
-        return true if in_check?(color)
+        checkmate = false unless in_check?(color)
         move[poss_move, king_pos]
       end
     end
-    false
+    checkmate
   end
 
   private
@@ -121,3 +123,8 @@ class Board
     end
   end
 end
+#
+# b = Board.new
+# b.move([0,3], [5,3])
+# b.render
+# b[[5,3]].valid_moves.sort

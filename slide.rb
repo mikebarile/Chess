@@ -3,15 +3,15 @@ module Slide
   def valid_moves
     #Create array of possible moves
     gen_diffs if self.is_a?(Pawn)
-    poss_moves = generate_poss_moves
+    p poss_moves = generate_poss_moves
     #Is the space in bounds?
-    poss_moves = in_bounds(poss_moves)
+    p poss_moves = in_bounds(poss_moves)
     #Is the space empty or occupied by opponent piece?
-    poss_moves = empty_or_opp(poss_moves)
+    p poss_moves = empty_or_opp(poss_moves)
     #Is the path blocked?
-    poss_moves = path_unblocked(poss_moves)
+    p poss_moves = path_unblocked(poss_moves)
     #Will the space put me into check?
-    poss_moves = avoids_check(poss_moves)
+    p poss_moves = avoids_check(poss_moves)
     #If piece is a pawn, ensure it can't move fwd into a piece
     if self.is_a?(Pawn)
       poss_moves = check_fwd(poss_moves)
@@ -74,6 +74,8 @@ module Slide
       diff = [row_m - row_s, col_m - col_s]
       step = diff.map{ |el| el == 0 ? el : el / el.abs}
       new_pos = @pos.dup
+      new_pos[0] += step[0]
+      new_pos[1] += step[1]
       un_blocked = true
       until new_pos == move
         new_pos[0] += step[0]
